@@ -3,7 +3,8 @@ export interface Earthquake {
     properties: {
         mag: number,
         place: string,
-        time: number
+        time: number,
+        url: string,
     };
 
     geometry: {

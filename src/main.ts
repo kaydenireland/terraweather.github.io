@@ -2,18 +2,30 @@ import L from 'leaflet';
 import { createMap } from './map.ts';
 import { loadPlates } from "./layers/plates.ts";
 import { getEarthquakes } from "./layers/earthquakes.ts";
+import { registerSettingsCallback } from "./util/map-settings.ts";
 
 const map: L.Map = createMap('map')
 
-const earthquakeLayer = L.layerGroup().addTo(map);
+const earthquakeLayer = L.layerGroup();
 
 let plateLayer = L.layerGroup();
-let showPlates: boolean = true;
 
+getEarthquakes(earthquakeLayer, 0).then(count => {
+    console.log(`${count} earthquakes loaded`);
+});
 
-if (showPlates) {
-    await loadPlates(plateLayer);
-    plateLayer.addTo(map);
-}
+registerSettingsCallback(async (settings) => {
+    if (settings.earthquakes.enabled) {
+        await getEarthquakes(earthquakeLayer, settings.earthquakes.minMagnitude);
+        earthquakeLayer.addTo(map);
+    } else {
+        earthquakeLayer.remove();
+    }
 
-getEarthquakes(earthquakeLayer, 0);
+    if (settings.tectonicPlates) {
+        await loadPlates(plateLayer);
+        plateLayer.addTo(map);
+    } else {
+        plateLayer.remove();
+    }
+});

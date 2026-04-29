@@ -1,0 +1,1 @@
+export const LOCATIONS: number[] = [-360, 0, 360];

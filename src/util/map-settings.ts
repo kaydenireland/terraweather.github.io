@@ -1,0 +1,69 @@
+
+export interface MapSettings {
+    timeRange: string;
+    earthquakes: {
+        enabled: boolean;
+        minMagnitude: number;
+    };
+    tectonicPlates: boolean;
+}
+
+export const settings: MapSettings = {
+    timeRange: 'day',
+    earthquakes: { enabled: true, minMagnitude: 2.5 },
+    tectonicPlates: false,
+};
+
+type ChangeCallback = (settings: MapSettings) => void;
+let onSettingsChange: ChangeCallback = () => {};
+
+export function registerSettingsCallback(cb: ChangeCallback): void {
+    onSettingsChange = cb;
+}
+
+function notifyChange(): void {
+    onSettingsChange({ ...settings, earthquakes: { ...settings.earthquakes } });
+}
+
+let collapsed: boolean = false;
+
+const header: HTMLElement = document.querySelector('#settings-header')!;
+const body: HTMLElement = document.querySelector('#settings-body') as HTMLElement;
+const chevron: HTMLElement = document.querySelector('#settings-chevron') as HTMLElement;
+
+header.addEventListener('click', () => {
+    collapsed = !collapsed;
+    body.style.display = collapsed ? 'none' : 'flex';
+    chevron.style.transform = collapsed ? 'rotate(-90deg)' : 'rotate(0deg)';
+});
+
+let earthquakeInput: HTMLInputElement = document.getElementById('eq-enabled') as HTMLInputElement;
+const eqSub: HTMLElement = document.querySelector('#eq-sub-settings') as HTMLElement;
+earthquakeInput.addEventListener('change', () => {
+    settings.earthquakes.enabled = earthquakeInput.checked;
+    eqSub.style.opacity = earthquakeInput.checked ? '1' : '0.4';
+    eqSub.style.pointerEvents = earthquakeInput.checked ? 'auto' : 'none';
+    notifyChange();
+});
+
+const magSlider = document.getElementById('mag-slider') as HTMLInputElement;
+const magDisplay = document.getElementById('mag-display') as HTMLElement;
+magSlider.addEventListener('input', () => {
+    settings.earthquakes.minMagnitude = parseFloat(magSlider.value);
+    magDisplay.textContent = `Mag ${settings.earthquakes.minMagnitude.toFixed(1)}`;
+    notifyChange();
+});
+
+const platesInput = document.getElementById('plates-enabled') as HTMLInputElement;
+platesInput.addEventListener('change', () => {
+    settings.tectonicPlates = platesInput.checked;
+    notifyChange();
+});
+
+const timeSelect = document.getElementById('time-range-select') as HTMLSelectElement;
+timeSelect.addEventListener('change', () => {
+    settings.timeRange = timeSelect.value;
+    notifyChange();
+});
+
+
