@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/terraweather/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terra Weather Watcher</title>
+    <script type="module" crossorigin src="/terraweather/assets/index-t10oFDDo.js"></script>
+    <link rel="stylesheet" crossorigin href="/terraweather/assets/index-Dk-QwPI2.css">
+  </head>
+  <body>
+  <div id="app">
+    <div id="map">
+
+      <div id="settings-tab">
+        <div id="settings-header">
+          <span>Map settings</span>
+          <svg id="settings-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <polyline points="2,4 6,8 10,4"/>
+          </svg>
+        </div>
+
+        <div id="settings-body">
+
+
+          <div class="settings-section">
+            <p class="settings-label">Weather</p>
+
+            <div class="layer-row">
+              <span>Earthquakes</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="eq-enabled"/>
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+
+            <div id="eq-sub-settings" class="sub-settings" style="opacity: 0.4;">
+              <div class="slider-row">
+                <div class="slider-header">
+                  <span>Min magnitude</span>
+                  <span id="mag-display">M 2.5</span>
+                </div>
+                <input type="range" id="mag-slider" min="0" max="9" step="0.5" value="2.5"/>
+              </div>
+            </div>
+
+            <hr class="settings-divider"/>
+
+            <p class="settings-label">Layers</p>
+
+            <div class="layer-row">
+              <span>Tectonic plates</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="plates-enabled"/>
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+
+            <hr class="settings-divider"/>
+
+            <div class="settings-section">
+              <p class="settings-label">Time range</p>
+              <span>Start Date:  </span><input type="date" id="start-date"> </br>
+              <span>End Date:  </span><input type="date" id="end-date">
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </body>
+</html>
