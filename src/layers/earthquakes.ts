@@ -1,25 +1,33 @@
 import L from 'leaflet'
 import type { Earthquake } from "../data/earthquake.ts";
-import {LOCATIONS} from "../util/layer-utils.ts";
+import { LOCATIONS } from "../util/layer-utils.ts";
+import { today, firstOfMonth } from "../data/date.ts";
 
 let cachedEarthquakes: Earthquake[] = [];
+let cachedStartTime: string = '';
+let cachedEndTime: string = '';
 
 export async function getEarthquakes(
     layer: L.LayerGroup,
-    minMagnitude: number = 3
+    minMagnitude: number = 3,
+    startTime: string = firstOfMonth(),
+    endTime: string = today()
 ): Promise<number> {
     try {
-        if (cachedEarthquakes.length === 0) {
-            const endTime = new Date().toISOString().split('T')[0];
-            const startTime = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+
+        const dateRangeChanged: boolean = startTime !== cachedStartTime || endTime !== cachedEndTime;
+
+        if (cachedEarthquakes.length === 0 || dateRangeChanged) {
             const url = `https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=${startTime}&endtime=${endTime}&minmagnitude=0`;
-            console.log(url);
+            // console.log(url);
 
             const result = await fetch(url);
             if (!result.ok) throw new Error(`USGS API error: ${result.status}`);
 
             const data = await result.json();
             cachedEarthquakes = data.features;
+            cachedStartTime = startTime;
+            cachedEndTime = endTime;
         }
 
         layer.clearLayers();
@@ -41,7 +49,7 @@ export async function getEarthquakes(
                     fillOpacity: 0.5,
                 })
                     .bindPopup(`
-                            <strong>Mag ${magnitude.toFixed(1)}</strong><br/>
+                            <strong>M ${magnitude.toFixed(1)}</strong><br/>
                             ${feature.properties.place}<br/>
                             <small>Depth: ${depth.toFixed(0)} km</small><br/>
                             <small>${new Date(feature.properties.time).toLocaleString()}</small></br>

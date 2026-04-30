@@ -1,6 +1,10 @@
+import { today, firstOfMonth } from "../data/date.ts";
 
 export interface MapSettings {
-    timeRange: string;
+    time: {
+        start: string;
+        end: string;
+    }
     earthquakes: {
         enabled: boolean;
         minMagnitude: number;
@@ -9,8 +13,14 @@ export interface MapSettings {
 }
 
 export const settings: MapSettings = {
-    timeRange: 'day',
-    earthquakes: { enabled: true, minMagnitude: 2.5 },
+    time: {
+        start: firstOfMonth(),
+        end: today(),
+    },
+    earthquakes: {
+        enabled: false,
+        minMagnitude: 2.5
+    },
     tectonicPlates: false,
 };
 
@@ -60,10 +70,16 @@ platesInput.addEventListener('change', () => {
     notifyChange();
 });
 
-const timeSelect = document.getElementById('time-range-select') as HTMLSelectElement;
-timeSelect.addEventListener('change', () => {
-    settings.timeRange = timeSelect.value;
+const startSelect = document.getElementById('start-date') as HTMLInputElement;
+startSelect.value = firstOfMonth();
+startSelect.addEventListener('change', () => {
+    settings.time.start = startSelect.value;
     notifyChange();
 });
 
-
+const endSelect = document.getElementById('end-date') as HTMLInputElement;
+endSelect.value = today();
+endSelect.addEventListener('change', () => {
+    settings.time.end = endSelect.value;
+    notifyChange();
+});

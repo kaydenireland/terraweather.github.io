@@ -16,7 +16,10 @@ getEarthquakes(earthquakeLayer, 0).then(count => {
 
 registerSettingsCallback(async (settings) => {
     if (settings.earthquakes.enabled) {
-        await getEarthquakes(earthquakeLayer, settings.earthquakes.minMagnitude);
+        await getEarthquakes(earthquakeLayer, settings.earthquakes.minMagnitude, settings.time.start, settings.time.end).then(count => {
+            console.log(`${count} earthquakes loaded`);
+        });
+
         earthquakeLayer.addTo(map);
     } else {
         earthquakeLayer.remove();
