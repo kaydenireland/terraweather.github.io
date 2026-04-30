@@ -5,12 +5,28 @@
     <link rel="icon" type="image/svg+xml" href="/terraweather/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Terra Weather Watcher</title>
-    <script type="module" crossorigin src="/terraweather/assets/index-t10oFDDo.js"></script>
-    <link rel="stylesheet" crossorigin href="/terraweather/assets/index-Dk-QwPI2.css">
+    <script type="module" crossorigin src="/terraweather/assets/index-DI9JSgLM.js"></script>
+    <link rel="stylesheet" crossorigin href="/terraweather/assets/index-C24RJsAc.css">
   </head>
   <body>
   <div id="app">
     <div id="map">
+
+      <div id="status-popup" class="hidden">
+        <div id="status-spinner"></div>
+        <p id="status-title">Loading earthquakes</p>
+        <p id="status-subtitle">Fetching from USGS...</p>
+      </div>
+
+      <div id="error-popup" class="hidden">
+        <div id="error-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M7 2v5M7 10v1" stroke="#a32d2d" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <p id="error-title">Something went wrong</p>
+        <p id="error-subtitle"></p>
+      </div>
 
       <div id="settings-tab">
         <div id="settings-header">
@@ -60,8 +76,9 @@
 
             <div class="settings-section">
               <p class="settings-label">Time range</p>
-              <span>Start Date:  </span><input type="date" id="start-date"> </br>
-              <span>End Date:  </span><input type="date" id="end-date">
+              <span>Start Date:  </span><input type="date" id="start-date"> <br>
+              <span>End Date:  </span><input type="date" id="end-date"> <br>
+              <button id="apply-dates">Apply</button>
             </div>
 
           </div>
