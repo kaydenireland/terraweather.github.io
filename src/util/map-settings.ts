@@ -1,4 +1,4 @@
-import { today, firstOfMonth } from "../data/date.ts";
+import { today, yesterday } from "../data/date.ts";
 
 export interface MapSettings {
     time: {
@@ -14,7 +14,7 @@ export interface MapSettings {
 
 export const settings: MapSettings = {
     time: {
-        start: firstOfMonth(),
+        start: yesterday(),
         end: today(),
     },
     earthquakes: {
@@ -34,6 +34,16 @@ export function registerSettingsCallback(cb: ChangeCallback): void {
 function notifyChange(): void {
     onSettingsChange({ ...settings, earthquakes: { ...settings.earthquakes } });
 }
+
+function debounce<T extends (...args: any[]) => void>(fn: T, delay: number): T {
+    let timer: ReturnType<typeof setTimeout>;
+    return ((...args: any[]) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn(...args), delay);
+    }) as T;
+}
+
+const debouncedNotify = debounce(notifyChange, 500);
 
 let collapsed: boolean = false;
 
@@ -60,8 +70,8 @@ const magSlider = document.getElementById('mag-slider') as HTMLInputElement;
 const magDisplay = document.getElementById('mag-display') as HTMLElement;
 magSlider.addEventListener('input', () => {
     settings.earthquakes.minMagnitude = parseFloat(magSlider.value);
-    magDisplay.textContent = `Mag ${settings.earthquakes.minMagnitude.toFixed(1)}`;
-    notifyChange();
+    magDisplay.textContent = `M ${settings.earthquakes.minMagnitude.toFixed(1)}`;
+    debouncedNotify();
 });
 
 const platesInput = document.getElementById('plates-enabled') as HTMLInputElement;
@@ -71,15 +81,13 @@ platesInput.addEventListener('change', () => {
 });
 
 const startSelect = document.getElementById('start-date') as HTMLInputElement;
-startSelect.value = firstOfMonth();
-startSelect.addEventListener('change', () => {
-    settings.time.start = startSelect.value;
-    notifyChange();
-});
-
+startSelect.value = yesterday();
 const endSelect = document.getElementById('end-date') as HTMLInputElement;
 endSelect.value = today();
-endSelect.addEventListener('change', () => {
+
+const dateButton = document.getElementById('apply-dates') as HTMLButtonElement;
+dateButton.addEventListener('click', () => {
+    settings.time.start = startSelect.value;
     settings.time.end = endSelect.value;
     notifyChange();
 });

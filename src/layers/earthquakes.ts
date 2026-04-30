@@ -1,7 +1,8 @@
 import L from 'leaflet'
 import type { Earthquake } from "../data/earthquake.ts";
 import { LOCATIONS } from "../util/layer-utils.ts";
-import { today, firstOfMonth } from "../data/date.ts";
+import { today, yesterday } from "../data/date.ts";
+import {hideStatus, showError} from "../util/status.ts";
 
 let cachedEarthquakes: Earthquake[] = [];
 let cachedStartTime: string = '';
@@ -10,7 +11,7 @@ let cachedEndTime: string = '';
 export async function getEarthquakes(
     layer: L.LayerGroup,
     minMagnitude: number = 3,
-    startTime: string = firstOfMonth(),
+    startTime: string = yesterday(),
     endTime: string = today()
 ): Promise<number> {
     try {
@@ -62,7 +63,8 @@ export async function getEarthquakes(
         return filtered.length;
 
     } catch (err) {
-        console.error('Failed to load earthquakes:', err);
+        hideStatus();
+        showError('Failed to load earthquakes', err instanceof Error ? err.message : 'Please try again');
         return 0;
     }
 }

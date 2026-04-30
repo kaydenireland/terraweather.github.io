@@ -13,3 +13,9 @@ export function firstOfMonth(): string {
     day.setUTCDate(1);
     return dateToString(day);
 }
+
+export function yesterday(): string {
+    let day: Date = new Date();
+    day.setUTCDate(day.getUTCDate() - 1);
+    return dateToString(day);
+}
