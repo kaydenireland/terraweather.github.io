@@ -1,15 +1,23 @@
 import { today, yesterday } from "../data/date.ts";
+import {MIN_MAG} from "../data/earthquake.ts";
+import {MIN_VEI} from "../data/volcano.ts";
 
 export interface MapSettings {
     time: {
         start: string;
         end: string;
-    }
+    };
     earthquakes: {
         enabled: boolean;
         minMagnitude: number;
     };
+    volcanoes: {
+        enabled: boolean;
+        minVEI: number;
+    };
     tectonicPlates: boolean;
+    terminator: boolean;
+    equator: boolean;
 }
 
 export const settings: MapSettings = {
@@ -19,9 +27,15 @@ export const settings: MapSettings = {
     },
     earthquakes: {
         enabled: false,
-        minMagnitude: 2.5
+        minMagnitude: MIN_MAG,
+    },
+    volcanoes: {
+        enabled: false,
+        minVEI: MIN_VEI,
     },
     tectonicPlates: false,
+    terminator: false,
+    equator: false,
 };
 
 type ChangeCallback = (settings: MapSettings) => void;
@@ -32,7 +46,7 @@ export function registerSettingsCallback(cb: ChangeCallback): void {
 }
 
 function notifyChange(): void {
-    onSettingsChange({ ...settings, earthquakes: { ...settings.earthquakes } });
+    onSettingsChange({ ...settings, earthquakes: { ...settings.earthquakes }, volcanoes: { ...settings.volcanoes } });
 }
 
 function debounce<T extends (...args: any[]) => void>(fn: T, delay: number): T {
@@ -74,9 +88,39 @@ magSlider.addEventListener('input', () => {
     debouncedNotify();
 });
 
+let volcanoInput: HTMLInputElement = document.getElementById('volc-enabled') as HTMLInputElement;
+const volcanoSub: HTMLElement = document.querySelector('#volc-sub-settings') as HTMLElement;
+volcanoInput.addEventListener('change', () => {
+    settings.volcanoes.enabled = volcanoInput.checked;
+    volcanoSub.style.opacity = volcanoInput.checked ? '1' : '0.4';
+    volcanoSub.style.pointerEvents = volcanoInput.checked ? 'auto' : 'none';
+    notifyChange();
+});
+
+
+const veiSlider = document.getElementById('vei-slider') as HTMLInputElement;
+const veiDisplay = document.getElementById('vei-display') as HTMLElement;
+veiSlider.addEventListener('input', () => {
+    settings.volcanoes.minVEI = parseFloat(veiSlider.value);
+    veiDisplay.textContent = `VEI ${settings.volcanoes.minVEI.toFixed(1)}`;
+    debouncedNotify();
+});
+
 const platesInput = document.getElementById('plates-enabled') as HTMLInputElement;
 platesInput.addEventListener('change', () => {
     settings.tectonicPlates = platesInput.checked;
+    notifyChange();
+});
+
+const equatorInput = document.getElementById('equator-enabled') as HTMLInputElement;
+equatorInput.addEventListener('change', () => {
+    settings.equator = equatorInput.checked;
+    notifyChange();
+});
+
+const terminatorInput = document.getElementById('terminator-enabled') as HTMLInputElement;
+terminatorInput.addEventListener('change', () => {
+    settings.terminator = terminatorInput.checked;
     notifyChange();
 });
 

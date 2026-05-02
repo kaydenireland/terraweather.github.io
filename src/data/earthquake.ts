@@ -1,4 +1,4 @@
-
+export const MIN_MAG = 2.5
 export interface Earthquake {
     properties: {
         mag: number,

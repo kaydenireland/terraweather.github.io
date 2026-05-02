@@ -224,3 +224,17 @@ body, #app {
   color: #888;
   margin: 0;
 }
+
+.volcano-marker {
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 14px solid #f97316;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.volcano-marker:hover {
+  transform: scale(1.3);
+}

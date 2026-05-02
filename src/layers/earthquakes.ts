@@ -1,5 +1,5 @@
 import L from 'leaflet'
-import type { Earthquake } from "../data/earthquake.ts";
+import {type Earthquake, MIN_MAG } from "../data/earthquake.ts";
 import { LOCATIONS } from "../util/layer-utils.ts";
 import { today, yesterday } from "../data/date.ts";
 import {hideStatus, showError} from "../util/status.ts";
@@ -10,7 +10,7 @@ let cachedEndTime: string = '';
 
 export async function getEarthquakes(
     layer: L.LayerGroup,
-    minMagnitude: number = 3,
+    minMagnitude: number = MIN_MAG,
     startTime: string = yesterday(),
     endTime: string = today()
 ): Promise<number> {
