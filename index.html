@@ -5,8 +5,8 @@
     <link rel="icon" type="image/svg+xml" href="/terraweather/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Terra Weather Watcher</title>
-    <script type="module" crossorigin src="/terraweather/assets/index-DI9JSgLM.js"></script>
-    <link rel="stylesheet" crossorigin href="/terraweather/assets/index-C24RJsAc.css">
+    <script type="module" crossorigin src="/terraweather/assets/index-mZsY3xU1.js"></script>
+    <link rel="stylesheet" crossorigin href="/terraweather/assets/index-wWa20-td.css">
   </head>
   <body>
   <div id="app">
@@ -60,6 +60,24 @@
               </div>
             </div>
 
+            <div class="layer-row">
+              <span>Volcanoes</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="volc-enabled"/>
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+
+            <div id="volc-sub-settings" class="sub-settings" style="opacity: 0.4;">
+              <div class="slider-row">
+                <div class="slider-header">
+                  <span>Min VEI</span>
+                  <span id="vei-display">VEI 2</span>
+                </div>
+                <input type="range" id="vei-slider" min="0" max="7" step="0.5" value="2"/>
+              </div>
+            </div>
+
             <hr class="settings-divider"/>
 
             <p class="settings-label">Layers</p>
@@ -68,6 +86,22 @@
               <span>Tectonic plates</span>
               <label class="toggle-switch">
                 <input type="checkbox" id="plates-enabled"/>
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+
+            <div class="layer-row">
+              <span>Equator</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="equator-enabled"/>
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+
+            <div class="layer-row">
+              <span>Daylight terminator</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="terminator-enabled"/>
                 <span class="toggle-track"></span>
               </label>
             </div>
