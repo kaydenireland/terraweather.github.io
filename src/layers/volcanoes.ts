@@ -16,10 +16,19 @@ export async function getVolcanoEruptions(
     try {
         if (cachedEruptions.length === 0) {
             // const url = 'https://webservices.volcano.si.edu/geoserver/GVP-VOTW/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=GVP-VOTW:Smithsonian_VOTW_Holocene_Volcanoes&outputFormat=application/json';
-            const url = '/gvp-api/geoserver/GVP-VOTW/ows' +
+            // const url = '/gvp-api/geoserver/GVP-VOTW/ows' +
+            //     '?service=WFS&version=1.0.0&request=GetFeature' +
+            //     '&typeName=GVP-VOTW:E3WebApp_Eruptions1960' +
+            //     '&outputFormat=application/json';
+
+            const GVP_BASE = '/gvp-api/geoserver/GVP-VOTW/ows' +
                 '?service=WFS&version=1.0.0&request=GetFeature' +
                 '&typeName=GVP-VOTW:E3WebApp_Eruptions1960' +
                 '&outputFormat=application/json';
+
+            const url = import.meta.env.DEV
+                ? GVP_BASE
+                : `https://corsproxy.io/?${encodeURIComponent('https://webservices.volcano.si.edu/geoserver/GVP-VOTW/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=GVP-VOTW:E3WebApp_Eruptions1960&outputFormat=application/json')}`;
 
             const result = await fetch(url, {
                 headers: {
