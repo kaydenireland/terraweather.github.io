@@ -1,0 +1,15 @@
+#settings-tab {
+    bottom: calc(env(safe-area-inset-bottom) + 150px);
+    left: 8px;
+    right: 8px;
+    width: auto;
+}
+
+#settings-header {
+    padding: 14px 16px;
+}
+
+#settings-body {
+    max-height: 50vh;
+    overflow-y: auto;
+}

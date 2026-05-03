@@ -18,10 +18,7 @@ body, #app {
 
 #settings-tab {
   position: absolute;
-  bottom: 24px;
-  left: 12px;
   z-index: 1000;
-  width: 260px;
   background: #ffffff;
   border: 0.5px solid rgba(0, 0, 0, 0.15);
   border-radius: 12px;
@@ -34,7 +31,6 @@ body, #app {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 14px;
   border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
   cursor: pointer;
   user-select: none;
