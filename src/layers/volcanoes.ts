@@ -15,32 +15,22 @@ export async function getVolcanoEruptions(
 ): Promise<number> {
     try {
         if (cachedEruptions.length === 0) {
-            // const url = 'https://webservices.volcano.si.edu/geoserver/GVP-VOTW/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=GVP-VOTW:Smithsonian_VOTW_Holocene_Volcanoes&outputFormat=application/json';
-            // const url = '/gvp-api/geoserver/GVP-VOTW/ows' +
-            //     '?service=WFS&version=1.0.0&request=GetFeature' +
-            //     '&typeName=GVP-VOTW:E3WebApp_Eruptions1960' +
-            //     '&outputFormat=application/json';
 
-            const GVP_BASE = '/gvp-api/geoserver/GVP-VOTW/ows' +
-                '?service=WFS&version=1.0.0&request=GetFeature' +
-                '&typeName=GVP-VOTW:E3WebApp_Eruptions1960' +
-                '&outputFormat=application/json';
+
+            const GVP_BASE = 'https://webservices.volcano.si.edu/geoserver/GVP-VOTW/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=GVP-VOTW:E3WebApp_Eruptions1960&outputFormat=application/json';
 
             const url = import.meta.env.DEV
-                ? GVP_BASE
-                : `https://corsproxy.io/?${encodeURIComponent('https://webservices.volcano.si.edu/geoserver/GVP-VOTW/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=GVP-VOTW:E3WebApp_Eruptions1960&outputFormat=application/json')}`;
+                ? '/gvp-api' + GVP_BASE
+                : `https://weather-proxy.kaydenireland.workers.dev/?url=${encodeURIComponent(GVP_BASE)}`
 
-            const result = await fetch(url, {
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                }
-            });
+            const result = await fetch(url);
             if (!result.ok) throw new Error(`GVP API error: ${result.status}`);
 
-            const data = await result.json();
+            let data = await result.json();
+
             // console.log('Total features:', data.features.length);
             // console.log('Sample feature:', data.features[0]);
-            // console.log('Unique categories:', [...new Set(data.features.map((f: any) => f.properties.Eruption_Category))]);
+
             cachedEruptions = data.features;
         }
 
@@ -113,10 +103,10 @@ export async function getVolcanoEruptions(
 
 export function getVEIStyle(vei: number | null): { color: string; size: number } {
     const v = vei ?? 0;
-    if (v >= 7) return { color: '#7c3aed', size: 30 };
-    if (v >= 6) return { color: '#ef4444', size: 28 };
-    if (v >= 5) return { color: '#f97316', size: 24 };
-    if (v >= 4) return { color: '#fbbf24', size: 20 };
-    if (v >= 2) return { color: '#84cc16', size: 15 };
+    if (v >= 6) return { color: '#7c3aed', size: 24 };
+    if (v >= 4) return { color: '#ef4444', size: 22 };
+    if (v >= 3) return { color: '#f97316', size: 20 };
+    if (v >= 2) return { color: '#fbbf24', size: 16 };
+    if (v >= 1) return { color: '#b8e31c', size: 14 };
     return { color: '#94a3b8', size: 10 };
 }

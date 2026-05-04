@@ -1,7 +1,7 @@
 import L from 'leaflet';
 
 export function createMap(containerId: string): L.Map {
-    const map = L.map(containerId, {
+    const map: L.Map = L.map(containerId, {
         worldCopyJump: true,
         maxBounds: new L.LatLngBounds([-180, -180], [180, 180]),
         minZoom: 2,

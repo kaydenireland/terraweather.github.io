@@ -1,6 +1,6 @@
 import { today, yesterday } from "../data/date.ts";
-import {MIN_MAG} from "../data/earthquake.ts";
-import {MIN_VEI} from "../data/volcano.ts";
+import { MIN_MAG } from "../data/earthquake.ts";
+import { MIN_VEI } from "../data/volcano.ts";
 
 export interface MapSettings {
     time: {

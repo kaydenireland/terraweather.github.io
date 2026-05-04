@@ -23,6 +23,8 @@ export function showError(message: string, detail: string = ''): void {
     errorSubtitle.textContent = detail;
     errorPopup.classList.remove('hidden');
 
+    console.log(message + ": ", detail);
+
     clearTimeout(errorTimer);
     errorTimer = setTimeout(() => {
         errorPopup.classList.add('hidden');
